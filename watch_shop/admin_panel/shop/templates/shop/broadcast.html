@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>📢 Рассылка пользователям</h1>
+
+{% if messages %}
+  {% for msg in messages %}
+    <div style="background:{% if 'Ошибок' in msg.message %}#fff3cd{% else %}#d4edda{% endif %};
+                border:1px solid #ccc;padding:15px;border-radius:8px;margin-bottom:20px;">
+      {{ msg }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div style="background:#f8f9fa;padding:20px;border-radius:10px;margin-bottom:20px;">
+  <p>👥 Всего пользователей для рассылки: <strong>{{ total_users }}</strong></p>
+</div>
+
+<form method="post" style="max-width:600px;">
+  {% csrf_token %}
+  <div style="margin-bottom:15px;">
+    <label style="display:block;margin-bottom:5px;font-weight:bold;">Текст сообщения:</label>
+    <textarea name="text" rows="6"
+      style="width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;font-size:14px;"
+      placeholder="Введите текст рассылки...&#10;Поддерживается HTML: &lt;b&gt;жирный&lt;/b&gt;, &lt;i&gt;курсив&lt;/i&gt;"></textarea>
+  </div>
+  <button type="submit"
+    style="background:#1a73e8;color:white;padding:12px 30px;border:none;border-radius:5px;font-size:16px;cursor:pointer;">
+    📢 Отправить всем
+  </button>
+  <a href="/admin/"
+    style="margin-left:15px;background:#6c757d;color:white;padding:12px 20px;border-radius:5px;text-decoration:none;">
+    ◀ Назад
+  </a>
+</form>
+{% endblock %}

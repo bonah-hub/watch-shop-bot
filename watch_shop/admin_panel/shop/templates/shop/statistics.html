@@ -1,0 +1,84 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>📊 Статистика бота</h1>
+
+<div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:30px;">
+  <div style="background:#1a73e8;color:white;padding:20px 30px;border-radius:10px;text-align:center;">
+    <div style="font-size:36px;font-weight:bold;">{{ total_users }}</div>
+    <div>👤 Пользователей</div>
+  </div>
+  <div style="background:#34a853;color:white;padding:20px 30px;border-radius:10px;text-align:center;">
+    <div style="font-size:36px;font-weight:bold;">{{ total_messages }}</div>
+    <div>💬 Сообщений</div>
+  </div>
+  <div style="background:#fbbc04;color:white;padding:20px 30px;border-radius:10px;text-align:center;">
+    <div style="font-size:36px;font-weight:bold;">{{ total_orders }}</div>
+    <div>📦 Заказов</div>
+  </div>
+  <div style="background:#ea4335;color:white;padding:20px 30px;border-radius:10px;text-align:center;">
+    <div style="font-size:36px;font-weight:bold;">{{ total_revenue }} ₸</div>
+    <div>💰 Выручка</div>
+  </div>
+</div>
+
+<div style="display:flex; gap:30px; flex-wrap:wrap;">
+
+  <div style="flex:1; min-width:300px;">
+    <h2>🔥 Топ запросов</h2>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr style="background:#f0f0f0;">
+        <th style="padding:8px;text-align:left;border:1px solid #ddd;">Запрос</th>
+        <th style="padding:8px;text-align:center;border:1px solid #ddd;">Кол-во</th>
+      </tr>
+      {% for cmd in top_commands %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ddd;">{{ cmd.user_message }}</td>
+        <td style="padding:8px;text-align:center;border:1px solid #ddd;">{{ cmd.count }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="2" style="padding:8px;text-align:center;">Нет данных</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div style="flex:1; min-width:300px;">
+    <h2>📦 Заказы по статусам</h2>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr style="background:#f0f0f0;">
+        <th style="padding:8px;text-align:left;border:1px solid #ddd;">Статус</th>
+        <th style="padding:8px;text-align:center;border:1px solid #ddd;">Кол-во</th>
+      </tr>
+      {% for s in orders_by_status %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ddd;">{{ s.status }}</td>
+        <td style="padding:8px;text-align:center;border:1px solid #ddd;">{{ s.count }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="2" style="padding:8px;text-align:center;">Нет заказов</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div style="flex:1; min-width:300px;">
+    <h2>👤 Последние пользователи</h2>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr style="background:#f0f0f0;">
+        <th style="padding:8px;text-align:left;border:1px solid #ddd;">Username</th>
+        <th style="padding:8px;text-align:left;border:1px solid #ddd;">Дата</th>
+      </tr>
+      {% for u in recent_users %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ddd;">@{{ u.username|default:u.user_id }}</td>
+        <td style="padding:8px;border:1px solid #ddd;">{{ u.created_at|date:"d.m.Y H:i" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="2" style="padding:8px;text-align:center;">Нет пользователей</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+</div>
+
+<br>
+<a href="/admin/" style="background:#444;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;">◀ Назад в Admin</a>
+{% endblock %}
